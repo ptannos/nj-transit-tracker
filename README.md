@@ -9,6 +9,13 @@ A portfolio project showcasing UI/UX skills with a Lit web components app for tr
 - ⚡ **Lit Web Components**: Reusable, performant components built with Lit
 - 🎨 **Clean UI/UX**: Professional design showcasing portfolio-grade UI skills
 
+## Demo
+
+<video controls width="100%" poster="assets/Screen Recording 2026-07-16 at 11.13.28 AM.mov">
+  <source src="assets/Screen Recording 2026-07-16 at 11.13.28 AM.mov" type="video/quicktime">
+  Your browser does not support the video tag.
+</video>
+
 ## Project Structure
 
 ```

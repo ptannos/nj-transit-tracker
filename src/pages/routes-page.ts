@@ -9,11 +9,13 @@ import styles from "./routes-page.css.ts";
 export class RoutesPage extends LitElement {
   @state() declare routes: Route[];
   @state() declare filter: "all" | "bus" | "train";
+  @state() declare searchTerm: string;
 
   constructor() {
     super();
     this.routes = mockRoutes;
     this.filter = "all";
+    this.searchTerm = "";
   }
 
   static styles = unsafeCSS(styles);
@@ -24,6 +26,16 @@ export class RoutesPage extends LitElement {
     return html`
       <div class="page-container">
         <div class="page-header">
+          <div class="search-controls">
+            <input
+              class="search-input"
+              type="search"
+              placeholder="Search by route number or train name"
+              .value=${this.searchTerm}
+              @input=${this.handleSearch}
+              aria-label="Search routes"
+            />
+          </div>
           <div class="filter-controls">
             <button
               class="filter-btn ${this.filter === "all" ? "active" : ""}"
@@ -66,11 +78,23 @@ export class RoutesPage extends LitElement {
     this.filter = filter;
   }
 
+  private handleSearch(event: Event) {
+    const target = event.target as HTMLInputElement;
+    this.searchTerm = target.value.trim().toLowerCase();
+  }
+
   private getFilteredRoutes(): Route[] {
-    if (this.filter === "all") {
-      return this.routes;
-    }
-    return this.routes.filter((route) => route.type === this.filter);
+    const normalizedSearchTerm = this.searchTerm.trim().toLowerCase();
+
+    return this.routes.filter((route) => {
+      const matchesType = this.filter === "all" || route.type === this.filter;
+      const matchesSearch =
+        normalizedSearchTerm.length === 0 ||
+        route.name.toLowerCase().includes(normalizedSearchTerm) ||
+        route.destination.toLowerCase().includes(normalizedSearchTerm);
+
+      return matchesType && matchesSearch;
+    });
   }
 }
 

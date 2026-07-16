@@ -42,4 +42,37 @@ describe("RoutesPage", () => {
 
     element.remove();
   });
+
+  it("filters routes by search text for bus numbers and train names", async () => {
+    const element = document.createElement("routes-page") as RoutesPage;
+    document.body.appendChild(element);
+
+    await element.updateComplete;
+
+    const searchInput = element.shadowRoot?.querySelector(
+      'input[placeholder="Search by route number or train name"]',
+    ) as HTMLInputElement | null;
+
+    expect(searchInput).not.toBeNull();
+
+    searchInput!.value = "191";
+    searchInput!.dispatchEvent(new Event("input"));
+    await element.updateComplete;
+
+    const filteredCards = Array.from(
+      element.shadowRoot?.querySelectorAll("route-card") ?? [],
+    );
+    await Promise.all(filteredCards.map((card) => card.updateComplete));
+
+    expect(filteredCards).toHaveLength(2);
+    const visibleRouteNames = filteredCards
+      .map((card) =>
+        card.shadowRoot?.querySelector(".route-name")?.textContent?.trim(),
+      )
+      .filter((name): name is string => Boolean(name));
+
+    expect(visibleRouteNames).toEqual(["Route 191", "Route 191X"]);
+
+    element.remove();
+  });
 });

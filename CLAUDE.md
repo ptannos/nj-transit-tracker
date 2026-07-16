@@ -21,14 +21,14 @@ Styling: Plain CSS (one stylesheet per component)
 - Prefer `:host` for component-level styling.
 - Avoid unnecessary `!important`.
 - Keep selectors shallow.
-- Every component should have its own dedicated stylesheet.
+- Every component should have its own dedicated .ts file that provides the stylesheet.
 
 Example:
 
 src/components/
 my-button/
 my-button.ts
-my-button.css
+my-button.css.ts
 my-button.test.ts
 
 ## Guidelines

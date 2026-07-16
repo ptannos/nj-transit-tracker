@@ -1,14 +1,10 @@
 import { LitElement, html, css } from "lit";
 import { customElement } from "lit/decorators.js";
 import "./components/header/app-header";
-import "./components/navigation/app-nav";
 import "./pages/routes-page";
-import "./pages/alerts-page";
 
 @customElement("app-root")
 export class App extends LitElement {
-  private currentPage = "routes";
-
   static styles = css`
     :host {
       --primary-color: #0066cc;
@@ -39,21 +35,11 @@ export class App extends LitElement {
     return html`
       <div class="app-container">
         <app-header></app-header>
-        <app-nav @page-changed=${this.handlePageChange}></app-nav>
         <div class="main-content">
-          ${this.currentPage === "routes"
-            ? html`<routes-page></routes-page>`
-            : ""}
-          ${this.currentPage === "alerts"
-            ? html`<alerts-page></alerts-page>`
-            : ""}
+          <routes-page></routes-page>
         </div>
       </div>
     `;
-  }
-
-  private handlePageChange(event: CustomEvent) {
-    this.currentPage = event.detail.page;
   }
 }
 

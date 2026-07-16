@@ -24,7 +24,7 @@ Main root component that wraps the entire application. Handles page routing and 
 
 - Defines CSS variables for theming
 - Manages page state
-- Renders header, navigation, and active page
+- Renders header and active page
 
 ---
 
@@ -49,34 +49,6 @@ Displays the application header with logo and branding.
 - Responsive header layout
 - Logo and tagline display
 - Professional styling
-
----
-
-### app-nav
-
-**Location:** `src/components/navigation/app-nav.ts`
-
-Navigation component for switching between application pages.
-
-**Props:**
-
-- None
-
-**Events:**
-
-- `page-changed` - Emits `{ detail: { page: string } }` when a page is selected
-
-**Usage:**
-
-```html
-<app-nav @page-changed="${this.handlePageChange}"></app-nav>
-```
-
-**Features:**
-
-- Tab-based navigation
-- Active state indicators
-- Dispatches custom events for page changes
 
 ---
 
@@ -123,40 +95,41 @@ interface Route {
 
 ---
 
-### alert-card
+### route-card
 
-**Location:** `src/components/cards/alert-card.ts`
+**Location:** `src/components/cards/route-card.ts`
 
-Displays service alert information with severity levels.
+Displays route information with status, next departure, and destination details.
 
 **Props:**
 | Property | Type | Required | Description |
 |----------|------|----------|-------------|
-| alert | Alert | Yes | Alert object containing alert details |
+| route | Route | Yes | Route object containing transit details |
 
 **Usage:**
 
 ```html
-<alert-card .alert="${alertObject}"></alert-card>
+<route-card .route="${routeObject}"></route-card>
 ```
 
 **Features:**
 
-- Color-coded by severity (info, warning, critical)
-- Shows elapsed time since alert was posted
-- Displays resolution status
-- Responsive design
+- Shows route status and destination
+- Displays next departure time
+- Highlights stop count
+- Responsive layout
 
 **Data Structure:**
 
 ```typescript
-interface Alert {
+interface Route {
   id: string;
-  routeId: string;
-  message: string;
-  severity: "info" | "warning" | "critical";
-  timestamp: Date;
-  resolved: boolean;
+  name: string;
+  type: "bus" | "train";
+  status: "on-time" | "delayed" | "cancelled";
+  nextDeparture: Date;
+  destination: string;
+  stops: number;
 }
 ```
 
@@ -233,29 +206,6 @@ Visual indicator for vehicle occupancy levels.
 
 ---
 
-## Loader Components
-
-### loading-spinner
-
-**Location:** `src/components/loaders/loading-spinner.ts`
-
-Animated loading indicator component.
-
-**Props:**
-| Property | Type | Default | Description |
-|----------|------|---------|-------------|
-| message | String | 'Loading...' | Loading message text |
-| size | String | 'medium' | Size: 'small', 'medium', or 'large' |
-
-**Usage:**
-
-```html
-<loading-spinner></loading-spinner>
-<loading-spinner message="Fetching routes..." size="large"></loading-spinner>
-```
-
-**Features:**
-
 - Smooth rotating animation
 - Configurable size
 - Custom message display
@@ -288,32 +238,6 @@ Full page component for displaying transit routes.
 - Uses mock data from `src/data/mock-data.ts`
 - Empty state message
 - Sorting and filtering
-
----
-
-### alerts-page
-
-**Location:** `src/pages/alerts-page.ts`
-
-Full page component for displaying service alerts.
-
-**Props:**
-
-- None
-
-**Usage:**
-
-```html
-<alerts-page></alerts-page>
-```
-
-**Features:**
-
-- Displays alerts in list format
-- Filter by resolution status
-- Toggle active/all alerts
-- Severity color-coding
-- Empty state message
 
 ---
 

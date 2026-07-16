@@ -1,4 +1,4 @@
-import { Route, Alert, Vehicle } from "../models/transit";
+import { Route, Vehicle } from "../models/transit";
 
 export const mockRoutes: Route[] = [
   {
@@ -45,33 +45,6 @@ export const mockRoutes: Route[] = [
     nextDeparture: new Date(Date.now() + 10 * 60000),
     destination: "Port Authority - 42nd St",
     stops: 6,
-  },
-];
-
-export const mockAlerts: Alert[] = [
-  {
-    id: "alert-1",
-    routeId: "nj-128",
-    message: "Delayed due to traffic congestion on Route 128",
-    severity: "warning",
-    timestamp: new Date(Date.now() - 10 * 60000),
-    resolved: false,
-  },
-  {
-    id: "alert-2",
-    routeId: "nj-river-line",
-    message: "Service suspension for maintenance work",
-    severity: "critical",
-    timestamp: new Date(Date.now() - 30 * 60000),
-    resolved: false,
-  },
-  {
-    id: "alert-3",
-    routeId: "nj-191",
-    message: "Running on-time schedule",
-    severity: "info",
-    timestamp: new Date(Date.now() - 60 * 60000),
-    resolved: true,
   },
 ];
 

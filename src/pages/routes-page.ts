@@ -6,8 +6,14 @@ import "../components/cards/route-card";
 
 @customElement("routes-page")
 export class RoutesPage extends LitElement {
-  @state() routes: Route[] = mockRoutes;
-  @state() filter: "all" | "bus" | "train" = "all";
+  @state() declare routes: Route[];
+  @state() declare filter: "all" | "bus" | "train";
+
+  constructor() {
+    super();
+    this.routes = mockRoutes;
+    this.filter = "all";
+  }
 
   static styles = css`
     :host {
@@ -22,7 +28,7 @@ export class RoutesPage extends LitElement {
 
     .page-header {
       display: flex;
-      justify-content: space-between;
+      justify-content: flex-end;
       align-items: center;
       border-bottom: 2px solid var(--border-color, #ddd);
       padding-bottom: 1.5rem;
@@ -85,7 +91,6 @@ export class RoutesPage extends LitElement {
     return html`
       <div class="page-container">
         <div class="page-header">
-          <h1 class="page-title">Transit Routes</h1>
           <div class="filter-controls">
             <button
               class="filter-btn ${this.filter === "all" ? "active" : ""}"
@@ -97,13 +102,13 @@ export class RoutesPage extends LitElement {
               class="filter-btn ${this.filter === "bus" ? "active" : ""}"
               @click=${() => this.setFilter("bus")}
             >
-              🚌 Buses
+              Buses
             </button>
             <button
               class="filter-btn ${this.filter === "train" ? "active" : ""}"
               @click=${() => this.setFilter("train")}
             >
-              🚂 Trains
+              Trains
             </button>
           </div>
         </div>

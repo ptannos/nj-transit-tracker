@@ -78,15 +78,13 @@ src/
 │
 ├── components/               # Reusable components
 │   ├── header/              # App header
-│   ├── navigation/          # Navigation tabs
 │   ├── cards/               # Route and Alert cards
 │   ├── badges/              # Status badge component
 │   ├── indicators/          # Occupancy indicator
-│   └── loaders/             # Loading spinner
 │
 ├── pages/                   # Page-level components
 │   ├── routes-page.ts       # Routes listing page
-│   └── alerts-page.ts       # Alerts listing page
+│   └── routes-page.ts       # Routes listing page
 │
 ├── models/                  # TypeScript interfaces
 │   └── transit.ts
@@ -111,23 +109,18 @@ Main application wrapper that handles page routing.
 
 Displays the application title and branding.
 
-### AppNav (`app-nav.ts`)
-
-Navigation component for switching between pages.
-
 ### RouteCard (`route-card.ts`)
 
 Displays individual transit route information.
 
-### AlertCard (`alert-card.ts`)
+### RouteCard (`route-card.ts`)
 
-Displays service alert information.
+Displays route information including status, destination, and departure details.
 
 ### Additional Components
 
 - `StatusBadge` - Reusable status badge
 - `OccupancyIndicator` - Visual occupancy meter
-- `LoadingSpinner` - Loading indicator
 
 ## Customization
 

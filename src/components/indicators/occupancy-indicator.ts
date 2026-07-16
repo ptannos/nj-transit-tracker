@@ -3,8 +3,14 @@ import { customElement, property } from "lit/decorators.js";
 
 @customElement("occupancy-indicator")
 export class OccupancyIndicator extends LitElement {
-  @property({ type: Number }) percentage = 0;
-  @property({ type: String }) label = "Occupancy";
+  @property({ type: Number }) declare percentage: number;
+  @property({ type: String }) declare label: string;
+
+  constructor() {
+    super();
+    this.percentage = 0;
+    this.label = "Occupancy";
+  }
 
   static styles = css`
     :host {

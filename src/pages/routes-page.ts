@@ -6,8 +6,14 @@ import "../components/cards/route-card";
 
 @customElement("routes-page")
 export class RoutesPage extends LitElement {
-  @state() routes: Route[] = mockRoutes;
-  @state() filter: "all" | "bus" | "train" = "all";
+  @state() declare routes: Route[];
+  @state() declare filter: "all" | "bus" | "train";
+
+  constructor() {
+    super();
+    this.routes = mockRoutes;
+    this.filter = "all";
+  }
 
   static styles = css`
     :host {

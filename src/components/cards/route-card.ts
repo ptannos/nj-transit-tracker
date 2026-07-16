@@ -4,7 +4,7 @@ import { Route } from "../../models/transit";
 
 @customElement("route-card")
 export class RouteCard extends LitElement {
-  @property({ type: Object }) route!: Route;
+  @property({ type: Object }) declare route: Route;
 
   static styles = css`
     :host {

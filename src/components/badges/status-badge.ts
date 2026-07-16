@@ -11,8 +11,14 @@ export type StatusType =
 
 @customElement("status-badge")
 export class StatusBadge extends LitElement {
-  @property({ type: String }) status: StatusType = "info";
-  @property({ type: Boolean }) rounded = false;
+  @property({ type: String }) declare status: StatusType;
+  @property({ type: Boolean }) declare rounded: boolean;
+
+  constructor() {
+    super();
+    this.status = "info";
+    this.rounded = false;
+  }
 
   static styles = css`
     :host {

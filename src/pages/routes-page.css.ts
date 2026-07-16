@@ -31,7 +31,7 @@ const styles = `
   .filter-btn {
     padding: 0.5rem 1rem;
     border: 2px solid var(--border-color, #ddd);
-    border-radius: 4px;
+    border-radius: 12px;
     background: white;
     cursor: pointer;
     font-size: 0.9rem;

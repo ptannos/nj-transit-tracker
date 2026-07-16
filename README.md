@@ -18,10 +18,13 @@ A portfolio project showcasing UI/UX skills with a Lit web components app for tr
 
 ### Screenshots
 
+All routes:
 ![All routes](assets/all-routes.png)
 
+Filtered routes (buses):
 ![Filtered routes](assets/filtered-routes.png)
 
+Route card hover state:
 ![Route card hover](assets/route-card-hover.png)
 
 ## Project Structure

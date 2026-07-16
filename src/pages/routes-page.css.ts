@@ -11,8 +11,9 @@ const styles = `
 
   .page-header {
     display: flex;
-    justify-content: flex-end;
+    justify-content: space-between;
     align-items: center;
+    gap: 1rem;
     border-bottom: 2px solid var(--border-color, #ddd);
     padding-bottom: 1.5rem;
   }
@@ -23,9 +24,28 @@ const styles = `
     color: var(--secondary-color, #333);
   }
 
+  .search-controls {
+    flex: 1;
+    max-width: 320px;
+  }
+
+  .search-input {
+    width: 100%;
+    padding: 0.7rem 0.9rem;
+    border: 2px solid var(--border-color, #ddd);
+    border-radius: 12px;
+    font-size: 0.95rem;
+  }
+
+  .search-input:focus {
+    outline: none;
+    border-color: var(--primary-color, #0066cc);
+  }
+
   .filter-controls {
     display: flex;
     gap: 0.5rem;
+    flex-wrap: wrap;
   }
 
   .filter-btn {

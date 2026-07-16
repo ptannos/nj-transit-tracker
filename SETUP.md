@@ -86,7 +86,7 @@ src/
 │
 ├── pages/                   # Page-level components
 │   ├── routes-page.ts       # Routes listing page
-│   └── alerts-page.ts       # Alerts listing page
+│   └── routes-page.ts       # Routes listing page
 │
 ├── models/                  # TypeScript interfaces
 │   └── transit.ts
@@ -119,9 +119,9 @@ Navigation component for switching between pages.
 
 Displays individual transit route information.
 
-### AlertCard (`alert-card.ts`)
+### RouteCard (`route-card.ts`)
 
-Displays service alert information.
+Displays route information including status, destination, and departure details.
 
 ### Additional Components
 

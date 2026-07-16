@@ -8,15 +8,6 @@ export interface Route {
   stops: number;
 }
 
-export interface Alert {
-  id: string;
-  routeId: string;
-  message: string;
-  severity: "info" | "warning" | "critical";
-  timestamp: Date;
-  resolved: boolean;
-}
-
 export interface Stop {
   id: string;
   name: string;

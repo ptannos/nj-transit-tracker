@@ -97,13 +97,13 @@ export class RoutesPage extends LitElement {
               class="filter-btn ${this.filter === "bus" ? "active" : ""}"
               @click=${() => this.setFilter("bus")}
             >
-              🚌 Buses
+              Buses
             </button>
             <button
               class="filter-btn ${this.filter === "train" ? "active" : ""}"
               @click=${() => this.setFilter("train")}
             >
-              🚂 Trains
+              Trains
             </button>
           </div>
         </div>

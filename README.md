@@ -1,11 +1,10 @@
 # NJ Transit Tracker
 
-A portfolio project showcasing UI/UX skills with a Lit web components app for tracking NJ transit buses and trains. Features real-time route status, service alerts, and a clean, responsive design.
+A portfolio project showcasing UI/UX skills with a Lit web components app for tracking NJ transit buses and trains. Features real-time route status, a clean, responsive design, and a routes-first experience.
 
 ## Features
 
 - 🚌 **Route Tracking**: Browse active bus and train routes with real-time status
-- ⚠️ **Service Alerts**: View and filter critical, warning, and info alerts
 - 🎯 **Responsive Design**: Mobile-friendly UI built with modern CSS Grid and Flexbox
 - ⚡ **Lit Web Components**: Reusable, performant components built with Lit
 - 🎨 **Clean UI/UX**: Professional design showcasing portfolio-grade UI skills
@@ -20,8 +19,7 @@ nj-transit-tracker/
 │   │   ├── navigation/      # Navigation/tab component
 │   │   └── cards/           # Reusable card components
 │   ├── pages/               # Page-level components
-│   │   ├── routes-page.ts
-│   │   └── alerts-page.ts
+│   │   └── routes-page.ts
 │   ├── models/              # TypeScript interfaces/types
 │   │   └── transit.ts
 │   ├── data/                # Mock data
@@ -75,7 +73,7 @@ Displays the app title and branding with logo and tagline.
 
 ### Navigation (`app-nav`)
 
-Tab-based navigation for switching between Routes and Alerts pages.
+Simple navigation for switching between Buses and Trains views.
 
 ### Route Card (`route-card`)
 
@@ -87,33 +85,20 @@ Displays individual transit route information including:
 - Number of stops
 - Destination
 
-### Alert Card (`alert-card`)
-
-Displays service alerts with:
-
-- Alert message and severity level
-- Time elapsed since alert was posted
-- Resolution status
-
 ## Pages
 
 ### Routes Page (`routes-page`)
 
 Browse all transit routes with filtering by type (bus/train). Cards are displayed in a responsive grid.
 
-### Alerts Page (`alerts-page`)
-
-View service alerts with toggle to show all alerts or only active ones.
-
 ## Mock Data
 
 The app uses dummy data stored in `src/data/mock-data.ts`. This includes:
 
 - 5 sample routes (bus and train)
-- 3 sample alerts with different severity levels
 - 3 sample vehicle locations
 
-To add more routes or alerts, edit the mock data file.
+To add more routes, edit the mock data file.
 
 ## Technologies
 

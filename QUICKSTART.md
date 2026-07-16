@@ -21,9 +21,8 @@ The app automatically opens at `http://localhost:5173`
 You'll see:
 
 - **Header**: NJ Transit Tracker branding
-- **Navigation**: Routes and Alerts tabs
-- **Routes Tab**: Browse buses and trains with filtering
-- **Alerts Tab**: View service alerts by severity
+- **Navigation**: Buses and Trains views
+- **Routes View**: Browse buses and trains in a responsive card grid
 
 ## Project Highlights
 
@@ -92,12 +91,6 @@ npm run type-check   # Check TypeScript types
 <route-card .route="${routeObject}"></route-card>
 ```
 
-### Display an Alert
-
-```html
-<alert-card .alert="${alertObject}"></alert-card>
-```
-
 ### Show Status
 
 ```html
@@ -137,15 +130,13 @@ nj-transit-tracker/
 │   │   ├── header/app-header.ts        # Header component
 │   │   ├── navigation/app-nav.ts       # Nav tabs
 │   │   ├── cards/                      # Card components
-│   │   │   ├── route-card.ts
-│   │   │   └── alert-card.ts
+│   │   │   └── route-card.ts
 │   │   ├── badges/status-badge.ts      # Status badge
 │   │   ├── indicators/occupancy-indicator.ts
 │   │   └── loaders/loading-spinner.ts
 │   │
 │   ├── pages/
-│   │   ├── routes-page.ts
-│   │   └── alerts-page.ts
+│   │   └── routes-page.ts
 │   │
 │   ├── models/transit.ts               # TypeScript types
 │   ├── data/mock-data.ts               # Mock data

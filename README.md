@@ -16,6 +16,14 @@ A portfolio project showcasing UI/UX skills with a Lit web components app for tr
   Your browser does not support the video tag.
 </video>
 
+### Screenshots
+
+![All routes](assets/all-routes.png)
+
+![Filtered routes](assets/filtered-routes.png)
+
+![Route card hover](assets/route-card-hover.png)
+
 ## Project Structure
 
 ```

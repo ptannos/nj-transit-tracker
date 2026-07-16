@@ -9,6 +9,11 @@ interface ImportMeta {
 }
 
 declare module "*.css?inline" {
-  const content: string;
-  export default content;
+  const styles: string;
+  export default styles;
+}
+
+declare module "*.css" {
+  const styles: string;
+  export default styles;
 }

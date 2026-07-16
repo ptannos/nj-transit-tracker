@@ -11,8 +11,8 @@ A portfolio project showcasing UI/UX skills with a Lit web components app for tr
 
 ## Demo
 
-<video controls width="100%" poster="assets/Screen Recording 2026-07-16 at 11.13.28 AM.mov">
-  <source src="assets/Screen Recording 2026-07-16 at 11.13.28 AM.mov" type="video/quicktime">
+<video controls width="100%">
+  <source src="assets/demo-screen-recording.mp4" type="video/mp4">
   Your browser does not support the video tag.
 </video>
 

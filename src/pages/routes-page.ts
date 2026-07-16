@@ -28,7 +28,7 @@ export class RoutesPage extends LitElement {
 
     .page-header {
       display: flex;
-      justify-content: space-between;
+      justify-content: flex-end;
       align-items: center;
       border-bottom: 2px solid var(--border-color, #ddd);
       padding-bottom: 1.5rem;
@@ -91,7 +91,6 @@ export class RoutesPage extends LitElement {
     return html`
       <div class="page-container">
         <div class="page-header">
-          <h1 class="page-title">Transit Routes</h1>
           <div class="filter-controls">
             <button
               class="filter-btn ${this.filter === "all" ? "active" : ""}"

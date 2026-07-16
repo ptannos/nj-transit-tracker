@@ -16,7 +16,6 @@ nj-transit-tracker/
 ├── src/
 │   ├── components/           # Reusable UI components
 │   │   ├── header/          # App header component
-│   │   ├── navigation/      # Navigation/tab component
 │   │   └── cards/           # Reusable card components
 │   ├── pages/               # Page-level components
 │   │   └── routes-page.ts
@@ -70,10 +69,6 @@ The app will open automatically at `http://localhost:5173`
 ### Header (`app-header`)
 
 Displays the app title and branding with logo and tagline.
-
-### Navigation (`app-nav`)
-
-Simple navigation for switching between Buses and Trains views.
 
 ### Route Card (`route-card`)
 

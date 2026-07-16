@@ -24,7 +24,7 @@ Main root component that wraps the entire application. Handles page routing and 
 
 - Defines CSS variables for theming
 - Manages page state
-- Renders header, navigation, and active page
+- Renders header and active page
 
 ---
 
@@ -49,34 +49,6 @@ Displays the application header with logo and branding.
 - Responsive header layout
 - Logo and tagline display
 - Professional styling
-
----
-
-### app-nav
-
-**Location:** `src/components/navigation/app-nav.ts`
-
-Navigation component for switching between application pages.
-
-**Props:**
-
-- None
-
-**Events:**
-
-- `page-changed` - Emits `{ detail: { page: string } }` when a page is selected
-
-**Usage:**
-
-```html
-<app-nav @page-changed="${this.handlePageChange}"></app-nav>
-```
-
-**Features:**
-
-- Tab-based navigation
-- Active state indicators
-- Dispatches custom events for page changes
 
 ---
 

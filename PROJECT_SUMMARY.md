@@ -30,8 +30,6 @@ nj-transit-tracker/
 │   ├── components/               # Reusable UI Components (7 total)
 │   │   ├── header/
 │   │   │   └── app-header.ts     # Header with branding
-│   │   ├── navigation/
-│   │   │   └── app-nav.ts        # Tab navigation
 │   │   ├── cards/
 │   │   │   └── route-card.ts     # Transit route display
 │   │   ├── badges/
@@ -74,14 +72,13 @@ nj-transit-tracker/
 - **Type safety** - Full TypeScript implementation
 - **CSS organization** - Global + component-scoped styles with CSS variables
 
-### 🎨 UI Components (7 Total)
+### 🎨 UI Components (6 Total)
 
 1. **app-header** - Branded header with logo
-2. **app-nav** - Tab-based page navigation
-3. **route-card** - Individual route display with status
-4. **status-badge** - Reusable status indicator
-5. **occupancy-indicator** - Gradient occupancy meter
-6. **loading-spinner** - Animated loader
+2. **route-card** - Individual route display with status
+3. **status-badge** - Reusable status indicator
+4. **occupancy-indicator** - Gradient occupancy meter
+5. **loading-spinner** - Animated loader
 
 ### 📄 Pages (2 Total)
 
@@ -178,7 +175,6 @@ npm run type-check   # Type checking
 ### Layout
 
 - Header with fixed branding
-- Tab navigation below header
 - Responsive grid for route cards (auto-fit, min 300px)
 - Linear list for alerts
 

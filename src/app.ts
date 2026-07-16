@@ -1,7 +1,6 @@
 import { LitElement, html, css } from "lit";
 import { customElement } from "lit/decorators.js";
 import "./components/header/app-header";
-import "./components/navigation/app-nav";
 import "./pages/routes-page";
 
 @customElement("app-root")
@@ -36,7 +35,6 @@ export class App extends LitElement {
     return html`
       <div class="app-container">
         <app-header></app-header>
-        <app-nav></app-nav>
         <div class="main-content">
           <routes-page></routes-page>
         </div>

@@ -21,7 +21,6 @@ The app automatically opens at `http://localhost:5173`
 You'll see:
 
 - **Header**: NJ Transit Tracker branding
-- **Navigation**: Buses and Trains views
 - **Routes View**: Browse buses and trains in a responsive card grid
 
 ## Project Highlights
@@ -40,7 +39,7 @@ src/
 
 ### 🎨 Key Features
 
-- ✅ 7+ reusable components
+- ✅ 6+ reusable components
 - ✅ TypeScript for type safety
 - ✅ Professional styling with CSS Grid/Flexbox
 - ✅ Mock data (easily swap with real API)
@@ -128,7 +127,6 @@ nj-transit-tracker/
 │   │
 │   ├── components/
 │   │   ├── header/app-header.ts        # Header component
-│   │   ├── navigation/app-nav.ts       # Nav tabs
 │   │   ├── cards/                      # Card components
 │   │   │   └── route-card.ts
 │   │   ├── badges/status-badge.ts      # Status badge

@@ -78,7 +78,6 @@ src/
 │
 ├── components/               # Reusable components
 │   ├── header/              # App header
-│   ├── navigation/          # Navigation tabs
 │   ├── cards/               # Route and Alert cards
 │   ├── badges/              # Status badge component
 │   ├── indicators/          # Occupancy indicator
@@ -110,10 +109,6 @@ Main application wrapper that handles page routing.
 ### AppHeader (`app-header.ts`)
 
 Displays the application title and branding.
-
-### AppNav (`app-nav.ts`)
-
-Navigation component for switching between pages.
 
 ### RouteCard (`route-card.ts`)
 

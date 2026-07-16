@@ -206,29 +206,6 @@ Visual indicator for vehicle occupancy levels.
 
 ---
 
-## Loader Components
-
-### loading-spinner
-
-**Location:** `src/components/loaders/loading-spinner.ts`
-
-Animated loading indicator component.
-
-**Props:**
-| Property | Type | Default | Description |
-|----------|------|---------|-------------|
-| message | String | 'Loading...' | Loading message text |
-| size | String | 'medium' | Size: 'small', 'medium', or 'large' |
-
-**Usage:**
-
-```html
-<loading-spinner></loading-spinner>
-<loading-spinner message="Fetching routes..." size="large"></loading-spinner>
-```
-
-**Features:**
-
 - Smooth rotating animation
 - Configurable size
 - Custom message display

@@ -131,7 +131,6 @@ nj-transit-tracker/
 │   │   │   └── route-card.ts
 │   │   ├── badges/status-badge.ts      # Status badge
 │   │   ├── indicators/occupancy-indicator.ts
-│   │   └── loaders/loading-spinner.ts
 │   │
 │   ├── pages/
 │   │   └── routes-page.ts

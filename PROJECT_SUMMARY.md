@@ -36,8 +36,6 @@ nj-transit-tracker/
 │   │   │   └── status-badge.ts   # Reusable status badge
 │   │   ├── indicators/
 │   │   │   └── occupancy-indicator.ts  # Occupancy visualization
-│   │   └── loaders/
-│   │       └── loading-spinner.ts      # Loading indicator
 │   │
 │   ├── pages/                    # Full Page Components
 │   │   └── routes-page.ts        # Routes listing & filtering
@@ -72,13 +70,12 @@ nj-transit-tracker/
 - **Type safety** - Full TypeScript implementation
 - **CSS organization** - Global + component-scoped styles with CSS variables
 
-### 🎨 UI Components (6 Total)
+### 🎨 UI Components (5 Total)
 
 1. **app-header** - Branded header with logo
 2. **route-card** - Individual route display with status
 3. **status-badge** - Reusable status indicator
 4. **occupancy-indicator** - Gradient occupancy meter
-5. **loading-spinner** - Animated loader
 
 ### 📄 Pages (2 Total)
 

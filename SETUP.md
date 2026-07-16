@@ -81,7 +81,6 @@ src/
 │   ├── cards/               # Route and Alert cards
 │   ├── badges/              # Status badge component
 │   ├── indicators/          # Occupancy indicator
-│   └── loaders/             # Loading spinner
 │
 ├── pages/                   # Page-level components
 │   ├── routes-page.ts       # Routes listing page
@@ -122,7 +121,6 @@ Displays route information including status, destination, and departure details.
 
 - `StatusBadge` - Reusable status badge
 - `OccupancyIndicator` - Visual occupancy meter
-- `LoadingSpinner` - Loading indicator
 
 ## Customization
 

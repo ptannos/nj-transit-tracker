@@ -5,23 +5,44 @@ import { Route } from "../models/transit";
 import "../components/cards/route-card";
 import styles from "./routes-page.css.ts";
 
+const INITIAL_VISIBLE_ROWS = 2;
+const MIN_CARD_WIDTH = 300;
+
 @customElement("routes-page")
 export class RoutesPage extends LitElement {
   @state() declare routes: Route[];
   @state() declare filter: "all" | "bus" | "train";
   @state() declare searchTerm: string;
+  @state() declare visibleCount: number;
 
   constructor() {
     super();
     this.routes = mockRoutes;
     this.filter = "all";
     this.searchTerm = "";
+    this.visibleCount = this.getInitialVisibleCount();
   }
 
   static styles = unsafeCSS(styles);
 
+  connectedCallback(): void {
+    super.connectedCallback();
+    window.addEventListener("resize", this.handleResize);
+  }
+
+  disconnectedCallback(): void {
+    window.removeEventListener("resize", this.handleResize);
+    super.disconnectedCallback();
+  }
+
+  firstUpdated(): void {
+    this.visibleCount = this.getInitialVisibleCount();
+  }
+
   render() {
     const filteredRoutes = this.getFilteredRoutes();
+    const visibleRoutes = filteredRoutes.slice(0, this.visibleCount);
+    const hasMoreRoutes = visibleRoutes.length < filteredRoutes.length;
 
     return html`
       <div class="page-container">
@@ -60,7 +81,7 @@ export class RoutesPage extends LitElement {
 
         <div class="routes-grid">
           ${filteredRoutes.length > 0
-            ? filteredRoutes.map(
+            ? visibleRoutes.map(
                 (route) => html`<route-card .route=${route}></route-card>`,
               )
             : html`
@@ -70,18 +91,57 @@ export class RoutesPage extends LitElement {
                 </div>
               `}
         </div>
+
+        ${hasMoreRoutes
+          ? html`
+              <div class="load-more-container">
+                <button class="load-more-button" @click=${this.loadMoreRoutes}>
+                  Load more
+                </button>
+              </div>
+            `
+          : ""}
       </div>
     `;
   }
 
   private setFilter(filter: "all" | "bus" | "train") {
     this.filter = filter;
+    this.visibleCount = this.getInitialVisibleCount();
   }
 
   private handleSearch(event: Event) {
     const target = event.target as HTMLInputElement;
     this.searchTerm = target.value.trim().toLowerCase();
+    this.visibleCount = this.getInitialVisibleCount();
   }
+
+  private loadMoreRoutes = () => {
+    const filteredRoutes = this.getFilteredRoutes();
+    const increment = Math.max(this.getInitialVisibleCount(), 2);
+    const nextCount = Math.min(
+      this.visibleCount + increment,
+      filteredRoutes.length,
+    );
+    this.visibleCount = nextCount;
+  };
+
+  private getInitialVisibleCount(): number {
+    const filteredRoutes = this.getFilteredRoutes();
+    const grid = this.shadowRoot?.querySelector(
+      ".routes-grid",
+    ) as HTMLElement | null;
+    const availableWidth =
+      grid?.clientWidth || this.clientWidth || window.innerWidth || 900;
+    const columns = Math.max(1, Math.floor(availableWidth / MIN_CARD_WIDTH));
+    const initialCount = Math.max(2, columns * INITIAL_VISIBLE_ROWS);
+
+    return Math.min(filteredRoutes.length, initialCount);
+  }
+
+  private handleResize = () => {
+    this.visibleCount = this.getInitialVisibleCount();
+  };
 
   private getFilteredRoutes(): Route[] {
     const normalizedSearchTerm = this.searchTerm.trim().toLowerCase();

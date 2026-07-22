@@ -6,7 +6,8 @@ import "../components/cards/route-card";
 import styles from "./routes-page.css.ts";
 
 const INITIAL_VISIBLE_ROWS = 2;
-const MIN_CARD_WIDTH = 300;
+const INITIAL_VISIBLE_COLUMNS = 3;
+const DEFAULT_VISIBLE_COUNT = INITIAL_VISIBLE_ROWS * INITIAL_VISIBLE_COLUMNS;
 
 @customElement("routes-page")
 export class RoutesPage extends LitElement {
@@ -20,7 +21,7 @@ export class RoutesPage extends LitElement {
     this.routes = mockRoutes;
     this.filter = "all";
     this.searchTerm = "";
-    this.visibleCount = this.getInitialVisibleCount();
+    this.visibleCount = DEFAULT_VISIBLE_COUNT;
   }
 
   static styles = unsafeCSS(styles);
@@ -36,7 +37,9 @@ export class RoutesPage extends LitElement {
   }
 
   firstUpdated(): void {
-    this.visibleCount = this.getInitialVisibleCount();
+    requestAnimationFrame(() => {
+      this.visibleCount = this.getInitialVisibleCount();
+    });
   }
 
   render() {
@@ -118,25 +121,25 @@ export class RoutesPage extends LitElement {
 
   private loadMoreRoutes = () => {
     const filteredRoutes = this.getFilteredRoutes();
-    const increment = Math.max(this.getInitialVisibleCount(), 2);
-    const nextCount = Math.min(
-      this.visibleCount + increment,
-      filteredRoutes.length,
-    );
-    this.visibleCount = nextCount;
+    const nextCount = this.getNextVisibleCount(filteredRoutes.length);
+    this.visibleCount = Math.min(nextCount, filteredRoutes.length);
   };
 
   private getInitialVisibleCount(): number {
     const filteredRoutes = this.getFilteredRoutes();
-    const grid = this.shadowRoot?.querySelector(
-      ".routes-grid",
-    ) as HTMLElement | null;
-    const availableWidth =
-      grid?.clientWidth || this.clientWidth || window.innerWidth || 900;
-    const columns = Math.max(1, Math.floor(availableWidth / MIN_CARD_WIDTH));
-    const initialCount = Math.max(2, columns * INITIAL_VISIBLE_ROWS);
+    return Math.min(filteredRoutes.length, DEFAULT_VISIBLE_COUNT);
+  }
 
-    return Math.min(filteredRoutes.length, initialCount);
+  private getNextVisibleCount(totalRoutes: number): number {
+    const nextCount = this.visibleCount + INITIAL_VISIBLE_COLUMNS;
+    return Math.min(totalRoutes, this.roundToFullRow(nextCount));
+  }
+
+  private roundToFullRow(count: number): number {
+    return Math.max(
+      DEFAULT_VISIBLE_COUNT,
+      Math.ceil(count / INITIAL_VISIBLE_COLUMNS) * INITIAL_VISIBLE_COLUMNS,
+    );
   }
 
   private handleResize = () => {

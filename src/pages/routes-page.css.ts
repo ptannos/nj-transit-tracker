@@ -102,6 +102,19 @@ const styles = `
     background: var(--primary-color, #0066cc);
     color: white;
   }
+
+  .filter-dropdown {
+    position: absolute;
+    top: 145px;
+    right: 0px;
+    background: white;
+    border: 1px solid var(--border-color, #ddd);
+    border-radius: 8px;
+    padding: 1rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    margin-top: 0.5rem;
+  }
 `;
 
 export default styles;

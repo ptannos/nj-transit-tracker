@@ -16,6 +16,7 @@ export class RoutesPage extends LitElement {
   @state() declare filter: "all" | "bus" | "train";
   @state() declare searchTerm: string;
   @state() declare visibleCount: number;
+  @state() declare isFilterDropdownOpen: boolean;
 
   constructor() {
     super();
@@ -23,6 +24,7 @@ export class RoutesPage extends LitElement {
     this.filter = "all";
     this.searchTerm = "";
     this.visibleCount = DEFAULT_VISIBLE_COUNT;
+    this.isFilterDropdownOpen = false;
   }
 
   static styles = unsafeCSS(styles);
@@ -41,6 +43,10 @@ export class RoutesPage extends LitElement {
     requestAnimationFrame(() => {
       this.visibleCount = this.getInitialVisibleCount();
     });
+  }
+
+  toggleFilterDropdown() {
+    this.isFilterDropdownOpen = !this.isFilterDropdownOpen;
   }
 
   render() {
@@ -80,6 +86,21 @@ export class RoutesPage extends LitElement {
             >
               Trains
             </button>
+            <button
+              class="filter-btn"
+              @click=${this.toggleFilterDropdown}
+              aria-haspopup="true"
+              aria-expanded=${this.isFilterDropdownOpen ? "true" : "false"}
+            >
+              More Filters
+            </button>
+            ${this.isFilterDropdownOpen
+              ? html`
+                  <div class="filter-dropdown">
+                    <p>Additional filter options can go here.</p>
+                  </div>
+                `
+              : ""}
           </div>
         </div>
 

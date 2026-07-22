@@ -6,14 +6,32 @@ import { RoutesPage } from "./routes-page";
 import "./routes-page";
 
 describe("RoutesPage", () => {
-  it("renders all routes by default and filters by transport type", async () => {
+  it("uses a safe initial visible count before layout is available", () => {
+    Object.defineProperty(window, "innerWidth", {
+      configurable: true,
+      value: 650,
+    });
+
+    const element = document.createElement("routes-page") as RoutesPage;
+    const visibleCount = (element as RoutesPage & { visibleCount: number })
+      .visibleCount;
+
+    expect(visibleCount).toBe(Math.min(mockRoutes.length, 6));
+  });
+
+  it("renders a limited set of routes by default and filters by transport type", async () => {
     const element = document.createElement("routes-page") as RoutesPage;
     document.body.appendChild(element);
 
     await element.updateComplete;
 
     const initialCards = element.shadowRoot?.querySelectorAll("route-card");
-    expect(initialCards).toHaveLength(mockRoutes.length);
+    expect(initialCards?.length).toBeLessThan(mockRoutes.length);
+
+    const loadMoreButton = element.shadowRoot?.querySelector(
+      "button.load-more-button",
+    );
+    expect(loadMoreButton).not.toBeNull();
 
     const busButton = Array.from(
       element.shadowRoot?.querySelectorAll("button") ?? [],
@@ -27,7 +45,7 @@ describe("RoutesPage", () => {
     );
     await Promise.all(filteredCards.map((card) => card.updateComplete));
 
-    expect(filteredCards).toHaveLength(
+    expect(filteredCards.length).toBeLessThanOrEqual(
       mockRoutes.filter((route) => route.type === "bus").length,
     );
 
@@ -37,8 +55,40 @@ describe("RoutesPage", () => {
       )
       .filter((name): name is string => Boolean(name));
 
-    expect(visibleRouteNames).toContain("Route 191");
-    expect(visibleRouteNames).toContain("Route 128");
+    expect(visibleRouteNames.length).toBeGreaterThan(0);
+    expect(
+      visibleRouteNames.every((name) =>
+        mockRoutes.some((route) => route.name === name && route.type === "bus"),
+      ),
+    ).toBe(true);
+
+    element.remove();
+  });
+
+  it("expands the visible routes when the load more button is pressed", async () => {
+    const element = document.createElement("routes-page") as RoutesPage;
+    document.body.appendChild(element);
+
+    await element.updateComplete;
+
+    const initialCards = Array.from(
+      element.shadowRoot?.querySelectorAll("route-card") ?? [],
+    );
+
+    const loadMoreButton = element.shadowRoot?.querySelector(
+      "button.load-more-button",
+    ) as HTMLButtonElement | null;
+
+    expect(loadMoreButton).not.toBeNull();
+
+    loadMoreButton?.click();
+    await element.updateComplete;
+
+    const expandedCards = Array.from(
+      element.shadowRoot?.querySelectorAll("route-card") ?? [],
+    );
+
+    expect(expandedCards.length).toBeGreaterThan(initialCards.length);
 
     element.remove();
   });

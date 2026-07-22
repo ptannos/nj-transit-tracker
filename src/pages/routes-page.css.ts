@@ -82,9 +82,25 @@ const styles = `
     color: #999;
   }
 
-  .empty-state-icon {
-    font-size: 3rem;
+  .load-more-container {
+    display: flex;
+    justify-content: center;
     margin-bottom: 1rem;
+  }
+
+  .load-more-button {
+    padding: 0.75rem 1.25rem;
+    border: 2px solid var(--primary-color, #0066cc);
+    border-radius: 100px;
+    background: white;
+    color: var(--primary-color, #0066cc);
+    cursor: pointer;
+    font-weight: 600;
+  }
+
+  .load-more-button:hover {
+    background: var(--primary-color, #0066cc);
+    color: white;
   }
 `;
 

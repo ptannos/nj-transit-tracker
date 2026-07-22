@@ -6,6 +6,19 @@ import { RoutesPage } from "./routes-page";
 import "./routes-page";
 
 describe("RoutesPage", () => {
+  it("uses a safe initial visible count before layout is available", () => {
+    Object.defineProperty(window, "innerWidth", {
+      configurable: true,
+      value: 650,
+    });
+
+    const element = document.createElement("routes-page") as RoutesPage;
+    const visibleCount = (element as RoutesPage & { visibleCount: number })
+      .visibleCount;
+
+    expect(visibleCount).toBe(Math.min(mockRoutes.length, 6));
+  });
+
   it("renders a limited set of routes by default and filters by transport type", async () => {
     const element = document.createElement("routes-page") as RoutesPage;
     document.body.appendChild(element);

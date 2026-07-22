@@ -5,8 +5,9 @@ import { Route } from "../models/transit";
 import "../components/cards/route-card";
 import styles from "./routes-page.css.ts";
 
-const INITIAL_VISIBLE_ROWS = 2;
+const INITIAL_VISIBLE_ROWS = 5;
 const INITIAL_VISIBLE_COLUMNS = 3;
+const NEXT_VISIBLE_ROWS = 3;
 const DEFAULT_VISIBLE_COUNT = INITIAL_VISIBLE_ROWS * INITIAL_VISIBLE_COLUMNS;
 
 @customElement("routes-page")
@@ -89,7 +90,6 @@ export class RoutesPage extends LitElement {
               )
             : html`
                 <div class="empty-state">
-                  <div class="empty-state-icon">🚫</div>
                   <p>No routes available for this filter.</p>
                 </div>
               `}
@@ -131,7 +131,8 @@ export class RoutesPage extends LitElement {
   }
 
   private getNextVisibleCount(totalRoutes: number): number {
-    const nextCount = this.visibleCount + INITIAL_VISIBLE_COLUMNS;
+    const nextCount =
+      this.visibleCount + NEXT_VISIBLE_ROWS * INITIAL_VISIBLE_COLUMNS;
     return Math.min(totalRoutes, this.roundToFullRow(nextCount));
   }
 

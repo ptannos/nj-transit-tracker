@@ -107,6 +107,10 @@ const styles = `
     position: absolute;
     top: 145px;
     right: 0px;
+    min-width: 180px;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
     background: white;
     border: 1px solid var(--border-color, #ddd);
     border-radius: 8px;
@@ -114,6 +118,19 @@ const styles = `
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     z-index: 1000;
     margin-top: 0.5rem;
+  }
+
+  .filter-dropdown-footer {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 1.25rem;
+  }
+
+  .apply-filters-btn {
+    border: none;
+    background: white;
+    font-weight: 600;
+    color: var(--primary-color);
   }
 `;
 

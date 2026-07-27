@@ -38,6 +38,8 @@ export class RoutesPage extends LitElement {
   @state() declare searchTerm: string;
   @state() declare visibleCount: number;
   @state() declare isFilterDropdownOpen: boolean;
+  @state() declare selectedFilters: Record<string, string | boolean>;
+  @state() declare selectedSortOption: string;
 
   constructor() {
     super();
@@ -46,6 +48,8 @@ export class RoutesPage extends LitElement {
     this.searchTerm = "";
     this.visibleCount = DEFAULT_VISIBLE_COUNT;
     this.isFilterDropdownOpen = false;
+    this.selectedFilters = {};
+    this.selectedSortOption = "";
   }
 
   static styles = unsafeCSS(styles);
@@ -66,8 +70,68 @@ export class RoutesPage extends LitElement {
     });
   }
 
-  toggleFilterDropdown() {
+  #toggleFilterDropdown() {
     this.isFilterDropdownOpen = !this.isFilterDropdownOpen;
+  }
+
+  #applyFilters() {
+    this.isFilterDropdownOpen = false;
+  }
+
+  #filterDropdownTemplate() {
+    return html`<div class="filter-dropdown">
+      ${Object.values(sortOptions).map(
+        (options) => html`
+          <div class="filter-dropdown-category">
+            <div class="filter-dropdown-label">
+              <p>${options.label}:</p>
+            </div>
+            <div class="filter-dropdown-options">
+              ${options.options.map(
+                (option) => html`
+                  <div class="filter-option">
+                    <input
+                      type="radio"
+                      id=${option.key}
+                      name=${options.label}
+                    />
+                    <label for=${option.key}>${option.label}</label>
+                  </div>
+                `,
+              )}
+            </div>
+          </div>
+        `,
+      )}
+      ${Object.values(moreFilterOptions).map(
+        (options) => html`
+          <div class="filter-dropdown-category">
+            <div class="filter-dropdown-label">
+              <p>${options.label}:</p>
+            </div>
+            <div class="filter-dropdown-options">
+              ${options.options.map(
+                (option) => html`
+                  <div class="filter-option">
+                    <input
+                      type="checkbox"
+                      id=${option.key}
+                      name=${option.key}
+                    />
+                    <label for=${option.key}>${option.label}</label>
+                  </div>
+                `,
+              )}
+            </div>
+          </div>
+        `,
+      )}
+      <div class="filter-dropdown-actions">
+        <button class="apply-filters-btn" @click=${this.#applyFilters}>
+          Apply
+        </button>
+      </div>
+    </div> `;
   }
 
   render() {
@@ -75,128 +139,79 @@ export class RoutesPage extends LitElement {
     const visibleRoutes = filteredRoutes.slice(0, this.visibleCount);
     const hasMoreRoutes = visibleRoutes.length < filteredRoutes.length;
 
-    return html`
-      <div class="page-container">
-        <div class="page-header">
-          <div class="search-controls">
-            <input
-              class="search-input"
-              type="search"
-              placeholder="Search by route number or train name"
-              .value=${this.searchTerm}
-              @input=${this.handleSearch}
-              aria-label="Search routes"
-            />
-          </div>
-          <div class="filter-controls">
-            <button
-              class="filter-btn ${this.filter === "all" ? "active" : ""}"
-              @click=${() => this.setFilter("all")}
-            >
-              All
-            </button>
-            <button
-              class="filter-btn ${this.filter === "bus" ? "active" : ""}"
-              @click=${() => this.setFilter("bus")}
-            >
-              Buses
-            </button>
-            <button
-              class="filter-btn ${this.filter === "train" ? "active" : ""}"
-              @click=${() => this.setFilter("train")}
-            >
-              Trains
-            </button>
-            <button
-              class="filter-btn"
-              @click=${this.toggleFilterDropdown}
-              aria-haspopup="true"
-              aria-expanded=${this.isFilterDropdownOpen ? "true" : "false"}
-            >
-              More Filters
-            </button>
-            ${this.isFilterDropdownOpen
-              ? html`
-                  <div class="filter-dropdown">
-                    ${Object.values(sortOptions).map(
-                      (options) => html`
-                        <div class="filter-dropdown-category">
-                          <div class="filter-dropdown-label">
-                            <p>${options.label}:</p>
-                          </div>
-                          <div class="filter-dropdown-options">
-                            ${options.options.map(
-                              (option) => html`
-                                <div class="filter-option">
-                                  <input
-                                    type="radio"
-                                    id=${option.key}
-                                    name=${options.label}
-                                  />
-                                  <label for=${option.key}
-                                    >${option.label}</label
-                                  >
-                                </div>
-                              `,
-                            )}
-                          </div>
-                        </div>
-                      `,
-                    )}
-                    ${Object.values(moreFilterOptions).map(
-                      (options) => html`
-                        <div class="filter-dropdown-category">
-                          <div class="filter-dropdown-label">
-                            <p>${options.label}:</p>
-                          </div>
-                          <div class="filter-dropdown-options">
-                            ${options.options.map(
-                              (option) => html`
-                                <div class="filter-option">
-                                  <input
-                                    type="checkbox"
-                                    id=${option.key}
-                                    name=${option.key}
-                                  />
-                                  <label for=${option.key}
-                                    >${option.label}</label
-                                  >
-                                </div>
-                              `,
-                            )}
-                          </div>
-                        </div>
-                      `,
-                    )}
-                  </div>
-                `
-              : ""}
+    return html` <div class="page-container">
+      <div class="page-header">
+        <div class="search-controls">
+          <input
+            class="search-input"
+            type="search"
+            placeholder="Search by route number or train name"
+            .value=${this.searchTerm}
+            @input=${this.handleSearch}
+            aria-label="Search routes"
+          />
+        </div>
+        <div class="filter-controls">
+          <button
+            class="filter-btn ${this.filter === "all" ? "active" : ""}"
+            @click=${() => this.setFilter("all")}
+          >
+            All
+          </button>
+          <button
+            class="filter-btn ${this.filter === "bus" ? "active" : ""}"
+            @click=${() => this.setFilter("bus")}
+          >
+            Buses
+          </button>
+          <button
+            class="filter-btn ${this.filter === "train" ? "active" : ""}"
+            @click=${() => this.setFilter("train")}
+          >
+            Trains
+          </button>
+          <button
+            class="filter-btn"
+            @click=${this.#toggleFilterDropdown}
+            aria-haspopup="true"
+            aria-expanded=${this.isFilterDropdownOpen ? "true" : "false"}
+          >
+            More Filters
+          </button>
+          ${this.isFilterDropdownOpen ? this.#filterDropdownTemplate() : ""}
           </div>
         </div>
 
         <div class="routes-grid">
-          ${filteredRoutes.length > 0
-            ? visibleRoutes.map(
-                (route) => html`<route-card .route=${route}></route-card>`,
-              )
-            : html`
-                <div class="empty-state">
-                  <p>No routes available for this filter.</p>
-                </div>
-              `}
+          ${
+            filteredRoutes.length > 0
+              ? visibleRoutes.map(
+                  (route) => html`<route-card .route=${route}></route-card>`,
+                )
+              : html`
+                  <div class="empty-state">
+                    <p>No routes available for this filter.</p>
+                  </div>
+                `
+          }
         </div>
 
-        ${hasMoreRoutes
-          ? html`
-              <div class="load-more-container">
-                <button class="load-more-button" @click=${this.loadMoreRoutes}>
-                  Load more
-                </button>
-              </div>
-            `
-          : ""}
+        ${
+          hasMoreRoutes
+            ? html`
+                <div class="load-more-container">
+                  <button
+                    class="load-more-button"
+                    @click=${this.loadMoreRoutes}
+                  >
+                    Load more
+                  </button>
+                </div>
+              `
+            : ""
+        }
       </div>
-    `;
+    </div>`;
   }
 
   private setFilter(filter: "all" | "bus" | "train") {

@@ -21,6 +21,16 @@ const moreFilterOptions = {
   },
 };
 
+const sortOptions = {
+  departureTime: {
+    label: "Departure Time",
+    options: [
+      { key: "earliest", label: "Earliest" },
+      { key: "latest", label: "Latest" },
+    ],
+  },
+};
+
 @customElement("routes-page")
 export class RoutesPage extends LitElement {
   @state() declare routes: Route[];
@@ -105,68 +115,86 @@ export class RoutesPage extends LitElement {
             >
               More Filters
             </button>
-            ${
-              this.isFilterDropdownOpen
-                ? html`
-                    <div class="filter-dropdown">
-                      ${Object.values(moreFilterOptions).map(
-                        (options) => html`
-                          <div class="filter-dropdown-category">
-                            <div class="filter-dropdown-label">
-                              <p>${options.label}:</p>
-                            </div>
-                            <div class="filter-dropdown-options">
-                              ${options.options.map(
-                                (option) => html`
-                                  <div class="filter-option">
-                                    <input
-                                      type="checkbox"
-                                      id=${option.key}
-                                      name=${option.key}
-                                    />
-                                    <label for=${option.key}>${option.label}</label>
-                                  </div>
-                                `,
-                              )}
-                            </div>
+            ${this.isFilterDropdownOpen
+              ? html`
+                  <div class="filter-dropdown">
+                    ${Object.values(sortOptions).map(
+                      (options) => html`
+                        <div class="filter-dropdown-category">
+                          <div class="filter-dropdown-label">
+                            <p>${options.label}:</p>
                           </div>
-                        `,
-                      )}
-                    </div>
-                  `
-                : ""
-            }
+                          <div class="filter-dropdown-options">
+                            ${options.options.map(
+                              (option) => html`
+                                <div class="filter-option">
+                                  <input
+                                    type="radio"
+                                    id=${option.key}
+                                    name=${options.label}
+                                  />
+                                  <label for=${option.key}
+                                    >${option.label}</label
+                                  >
+                                </div>
+                              `,
+                            )}
+                          </div>
+                        </div>
+                      `,
+                    )}
+                    ${Object.values(moreFilterOptions).map(
+                      (options) => html`
+                        <div class="filter-dropdown-category">
+                          <div class="filter-dropdown-label">
+                            <p>${options.label}:</p>
+                          </div>
+                          <div class="filter-dropdown-options">
+                            ${options.options.map(
+                              (option) => html`
+                                <div class="filter-option">
+                                  <input
+                                    type="checkbox"
+                                    id=${option.key}
+                                    name=${option.key}
+                                  />
+                                  <label for=${option.key}
+                                    >${option.label}</label
+                                  >
+                                </div>
+                              `,
+                            )}
+                          </div>
+                        </div>
+                      `,
+                    )}
+                  </div>
+                `
+              : ""}
           </div>
         </div>
 
         <div class="routes-grid">
-          ${
-            filteredRoutes.length > 0
-              ? visibleRoutes.map(
-                  (route) => html`<route-card .route=${route}></route-card>`,
-                )
-              : html`
-                  <div class="empty-state">
-                    <p>No routes available for this filter.</p>
-                  </div>
-                `
-          }
+          ${filteredRoutes.length > 0
+            ? visibleRoutes.map(
+                (route) => html`<route-card .route=${route}></route-card>`,
+              )
+            : html`
+                <div class="empty-state">
+                  <p>No routes available for this filter.</p>
+                </div>
+              `}
         </div>
 
-        ${
-          hasMoreRoutes
-            ? html`
-                <div class="load-more-container">
-                  <button
-                    class="load-more-button"
-                    @click=${this.loadMoreRoutes}
-                  >
-                    Load more
-                  </button>
-                </div>
-              `
-            : ""
-        }
+        ${hasMoreRoutes
+          ? html`
+              <div class="load-more-container">
+                <button class="load-more-button" @click=${this.loadMoreRoutes}>
+                  Load more
+                </button>
+              </div>
+            `
+          : ""}
       </div>
     `;
   }

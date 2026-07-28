@@ -13,6 +13,7 @@ const DEFAULT_VISIBLE_COUNT = INITIAL_VISIBLE_ROWS * INITIAL_VISIBLE_COLUMNS;
 const moreFilterOptions = {
   status: {
     label: "Status",
+    key: "status",
     options: [
       { key: "on-time", label: "On Time" },
       { key: "delayed", label: "Delayed" },
@@ -74,8 +75,37 @@ export class RoutesPage extends LitElement {
     this.isFilterDropdownOpen = !this.isFilterDropdownOpen;
   }
 
+  #getSelectedFilters(): Record<string, string | boolean> {
+    const selectedFilters: Record<string, string | boolean> = {};
+
+    Object.values(sortOptions).forEach((options) => {
+      const selectedOption = this.shadowRoot?.querySelector(
+        `input[name="${options.status}"]:checked`,
+      ) as HTMLInputElement | null;
+      if (selectedOption) {
+        selectedFilters[options.status] = selectedOption.id;
+      }
+    });
+
+    Object.values(moreFilterOptions).forEach((filter) => {
+      filter.options.forEach((option) => {
+        const checkbox = this.shadowRoot?.querySelector(
+          `input[id="${option.key}"]`,
+        ) as HTMLInputElement | null;
+        if (checkbox && checkbox.checked) {
+          selectedFilters[filter.key] = option.key;
+        }
+      });
+    });
+
+    return selectedFilters;
+  }
+
   #applyFilters() {
     this.isFilterDropdownOpen = false;
+    this.selectedFilters = this.#getSelectedFilters();
+    this.routes = this.getFilteredRoutes();
+    this.visibleCount = this.getInitialVisibleCount();
   }
 
   #filterDropdownTemplate() {
@@ -258,12 +288,17 @@ export class RoutesPage extends LitElement {
 
     return this.routes.filter((route) => {
       const matchesType = this.filter === "all" || route.type === this.filter;
+      const matchesMoreFilters = Object.entries(this.selectedFilters).every(
+        ([key, value]) => {
+          return route[key as keyof Route] === value;
+        },
+      );
       const matchesSearch =
         normalizedSearchTerm.length === 0 ||
         route.name.toLowerCase().includes(normalizedSearchTerm) ||
         route.destination.toLowerCase().includes(normalizedSearchTerm);
 
-      return matchesType && matchesSearch;
+      return matchesType && matchesSearch && matchesMoreFilters;
     });
   }
 }

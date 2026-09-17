@@ -77,27 +77,27 @@ export class RoutesPage extends LitElement {
 
   #getSelectedFilters(): Record<string, string | boolean> {
     const selectedFilters: Record<string, string | boolean> = {};
-
-    Object.values(sortOptions).forEach((options) => {
+    Object.entries(sortOptions).forEach(([key, _options]) => {
+      const name = `sort-${key}`;
       const selectedOption = this.shadowRoot?.querySelector(
-        `input[name="${options.status}"]:checked`,
+        `input[name="${name}"]:checked`,
       ) as HTMLInputElement | null;
       if (selectedOption) {
-        selectedFilters[options.status] = selectedOption.id;
+        selectedFilters[key] = selectedOption.value || selectedOption.id;
       }
     });
 
-    Object.values(moreFilterOptions).forEach((filter) => {
+    Object.entries(moreFilterOptions).forEach(([key, filter]) => {
       filter.options.forEach((option) => {
         const checkbox = this.shadowRoot?.querySelector(
           `input[id="${option.key}"]`,
         ) as HTMLInputElement | null;
         if (checkbox && checkbox.checked) {
-          selectedFilters[filter.key] = option.key;
+          selectedFilters[key] = option.key;
         }
       });
     });
-
+    console.log("Selected Filters:", selectedFilters);
     return selectedFilters;
   }
 
@@ -110,8 +110,8 @@ export class RoutesPage extends LitElement {
 
   #filterDropdownTemplate() {
     return html`<div class="filter-dropdown">
-      ${Object.values(sortOptions).map(
-        (options) => html`
+      ${Object.entries(sortOptions).map(
+        ([key, options]) => html`
           <div class="filter-dropdown-category">
             <div class="filter-dropdown-label">
               <p>${options.label}:</p>
@@ -119,22 +119,23 @@ export class RoutesPage extends LitElement {
             <div class="filter-dropdown-options">
               ${options.options.map(
                 (option) => html`
-                  <div class="filter-option">
+                  <label class="filter-option">
                     <input
                       type="radio"
                       id=${option.key}
-                      name=${options.label}
+                      name=${`sort-${key}`}
+                      value=${option.key}
                     />
-                    <label for=${option.key}>${option.label}</label>
-                  </div>
+                    <span class="option-label">${option.label}</span>
+                  </label>
                 `,
               )}
             </div>
           </div>
         `,
       )}
-      ${Object.values(moreFilterOptions).map(
-        (options) => html`
+      ${Object.entries(moreFilterOptions).map(
+        ([key, options]) => html`
           <div class="filter-dropdown-category">
             <div class="filter-dropdown-label">
               <p>${options.label}:</p>
@@ -142,14 +143,14 @@ export class RoutesPage extends LitElement {
             <div class="filter-dropdown-options">
               ${options.options.map(
                 (option) => html`
-                  <div class="filter-option">
+                  <label class="filter-option checkbox">
                     <input
                       type="checkbox"
                       id=${option.key}
-                      name=${option.key}
+                      name=${`${key}[]`}
                     />
-                    <label for=${option.key}>${option.label}</label>
-                  </div>
+                    <span class="option-label">${option.label}</span>
+                  </label>
                 `,
               )}
             </div>
@@ -161,7 +162,7 @@ export class RoutesPage extends LitElement {
           Apply
         </button>
       </div>
-    </div> `;
+    </div>`;
   }
 
   render() {
@@ -201,81 +202,82 @@ export class RoutesPage extends LitElement {
             Trains
           </button>
           <button
-            class="filter-btn"
+            class="filter-icon-btn"
             @click=${this.#toggleFilterDropdown}
             aria-haspopup="true"
             aria-expanded=${this.isFilterDropdownOpen ? "true" : "false"}
+            aria-label="Open filters"
+            title="Filters"
           >
-            More Filters
+            <svg
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              aria-hidden="true"
+            >
+              <path
+                d="M3 5h18"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+              />
+              <path
+                d="M6 12h12"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+              />
+              <path
+                d="M10 19h4"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+              />
+            </svg>
           </button>
           ${this.isFilterDropdownOpen ? this.#filterDropdownTemplate() : ""}
-          </div>
         </div>
-
-        <div class="routes-grid">
-          ${
-            filteredRoutes.length > 0
-              ? visibleRoutes.map(
-                  (route) => html`<route-card .route=${route}></route-card>`,
-                )
-              : html`
-                  <div class="empty-state">
-                    <p>No routes available for this filter.</p>
-                  </div>
-                `
-          }
-        </div>
-
-        ${
-          hasMoreRoutes
-            ? html`
-                <div class="load-more-container">
-                  <button
-                    class="load-more-button"
-                    @click=${this.loadMoreRoutes}
-                  >
-                    Load more
-                  </button>
-                </div>
-              `
-            : ""
-        }
       </div>
+
+      <div class="routes-grid">
+        ${visibleRoutes.map(
+          (route) => html` <route-card .route=${route}></route-card> `,
+        )}
+      </div>
+
+      ${hasMoreRoutes
+        ? html` <div class="load-more-container">
+            <button class="load-more-button" @click=${this.loadMore}>
+              Load more
+            </button>
+          </div>`
+        : ""}
     </div>`;
   }
 
-  private setFilter(filter: "all" | "bus" | "train") {
-    this.filter = filter;
-    this.visibleCount = this.getInitialVisibleCount();
-  }
-
-  private handleSearch(event: Event) {
-    const target = event.target as HTMLInputElement;
-    this.searchTerm = target.value.trim().toLowerCase();
-    this.visibleCount = this.getInitialVisibleCount();
-  }
-
-  private loadMoreRoutes = () => {
-    const filteredRoutes = this.getFilteredRoutes();
-    const nextCount = this.getNextVisibleCount(filteredRoutes.length);
-    this.visibleCount = Math.min(nextCount, filteredRoutes.length);
-  };
-
   private getInitialVisibleCount(): number {
-    const filteredRoutes = this.getFilteredRoutes();
-    return Math.min(filteredRoutes.length, DEFAULT_VISIBLE_COUNT);
+    const width = typeof window !== "undefined" ? window.innerWidth : 1200;
+    const columns = width >= 1100 ? INITIAL_VISIBLE_COLUMNS : 2;
+    return Math.max(DEFAULT_VISIBLE_COUNT, INITIAL_VISIBLE_ROWS * columns);
   }
 
-  private getNextVisibleCount(totalRoutes: number): number {
-    const nextCount =
-      this.visibleCount + NEXT_VISIBLE_ROWS * INITIAL_VISIBLE_COLUMNS;
-    return Math.min(totalRoutes, this.roundToFullRow(nextCount));
+  private handleSearch(e: Event) {
+    const target = e.target as HTMLInputElement;
+    this.searchTerm = target.value;
   }
 
-  private roundToFullRow(count: number): number {
-    return Math.max(
-      DEFAULT_VISIBLE_COUNT,
-      Math.ceil(count / INITIAL_VISIBLE_COLUMNS) * INITIAL_VISIBLE_COLUMNS,
+  private setFilter(type: "all" | "bus" | "train") {
+    this.filter = type;
+    this.routes = this.getFilteredRoutes();
+    this.visibleCount = this.getInitialVisibleCount();
+  }
+
+  private loadMore() {
+    this.visibleCount = Math.min(
+      this.routes.length,
+      this.visibleCount + NEXT_VISIBLE_ROWS * INITIAL_VISIBLE_COLUMNS,
     );
   }
 

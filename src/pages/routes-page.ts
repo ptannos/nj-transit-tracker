@@ -75,17 +75,23 @@ export class RoutesPage extends LitElement {
     this.isFilterDropdownOpen = !this.isFilterDropdownOpen;
   }
 
-  #getSelectedFilters(): Record<string, string | boolean> {
+  #getSelectedFiltersAndSort(): Record<string, string | boolean> {
     const selectedFilters: Record<string, string | boolean> = {};
+    const selectedSorts: Record<string, string> = {};
     Object.entries(sortOptions).forEach(([key, _options]) => {
       const name = `sort-${key}`;
       const selectedOption = this.shadowRoot?.querySelector(
         `input[name="${name}"]:checked`,
       ) as HTMLInputElement | null;
       if (selectedOption) {
-        selectedFilters[key] = selectedOption.value || selectedOption.id;
+        selectedSorts[key] = selectedOption.value || selectedOption.id;
       }
     });
+
+    this.selectedSortOption =
+      Object.keys(selectedSorts).length > 0
+        ? JSON.stringify(selectedSorts)
+        : "";
 
     Object.entries(moreFilterOptions).forEach(([key, filter]) => {
       filter.options.forEach((option) => {
@@ -97,13 +103,13 @@ export class RoutesPage extends LitElement {
         }
       });
     });
-    console.log("Selected Filters:", selectedFilters);
+
     return selectedFilters;
   }
 
   #applyFilters() {
     this.isFilterDropdownOpen = false;
-    this.selectedFilters = this.#getSelectedFilters();
+    this.selectedFilters = this.#getSelectedFiltersAndSort();
     this.routes = this.getFilteredRoutes();
     this.visibleCount = this.getInitialVisibleCount();
   }
@@ -287,8 +293,8 @@ export class RoutesPage extends LitElement {
 
   private getFilteredRoutes(): Route[] {
     const normalizedSearchTerm = this.searchTerm.trim().toLowerCase();
-
-    return this.routes.filter((route) => {
+    // Work from the original dataset
+    const results = mockRoutes.slice().filter((route) => {
       const matchesType = this.filter === "all" || route.type === this.filter;
       const matchesMoreFilters = Object.entries(this.selectedFilters).every(
         ([key, value]) => {
@@ -302,6 +308,26 @@ export class RoutesPage extends LitElement {
 
       return matchesType && matchesSearch && matchesMoreFilters;
     });
+
+    // JSON string mapping sort keys to chosen option (e.g. {"departureTime":"earliest"}).
+    if (this.selectedSortOption) {
+      const sortObj: Record<string, string> = JSON.parse(
+        this.selectedSortOption,
+      );
+      Object.entries(sortObj).forEach(([sortKey, sortDirection]) => {
+        if (sortKey === "departureTime") {
+          results.sort((a, b) => {
+            const tA = a.nextDeparture?.getTime() ?? 0;
+            const tB = b.nextDeparture?.getTime() ?? 0;
+            if (sortDirection === "earliest") return tA - tB;
+            return tB - tA;
+          });
+        }
+        // Additional sort keys can be handled here in future.
+      });
+    }
+
+    return results;
   }
 }
 
